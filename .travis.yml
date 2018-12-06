@@ -15,6 +15,19 @@ cache:
 
 matrix:
   include:
+    - os: windows
+      before_install:
+        - choco install python3
+      env: MATRIX_EVAL="CC=cl.exe && CXX=cl.exe" COMPILER="vc141"
+
+    - os: windows
+      before_install:
+        - choco install python3
+        - choco install mingw --version 7.3.0 --allow-downgrade
+        # Workaround for CMake not wanting sh.exe on PATH for MinGW
+        - export PATH=${PATH%:/c/Program Files/Git/usr/bin}
+      env: MATRIX_EVAL="CC=gcc && CXX=g++" COMPILER="mingw"
+
     - os: linux
       dist: trusty
       sudo: required
